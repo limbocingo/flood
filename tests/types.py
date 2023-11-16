@@ -1,44 +1,101 @@
-import sys
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any
+from string import punctuation
 
-sys.path.append('.')
 
-from src.lexer import read
+class Types(Enum):
+    INTEGER = 0
+    STRING = 1
+    FUNCTION = 2
+    BOOLEAN = 3
+    LIST = 4
+    NONE = 5
+    PUNCTUATION = 6
+    KEYWORD = 7
+    UNDEFINED = 8
+    FLOAT = 9
 
 
-def test_reader():
-    strline = read('tests/types.flood')[0]
-    strline = list(strline)
-    strline[-1] = '' if strline[-1] == '\n' else strline[-1]
-    strline = ''.join(strline)
+@dataclass
+class Object:
+    type: Types = Types.UNDEFINED
+    value: Any = Any
 
-    parsed = []
-    tmp = []
-    nlevel, level = 0, ''
 
-    for index, character in enumerate(strline):
-        if character == '[':
-            assert eval('tmp' + level + '[-1]') != None, 'You did not started a new value with `,`.'
+def is_float(element: any) -> bool:
+    try:
+        float(element)
+        return True
+    except ValueError:
+        return False
 
-            t = eval('tmp' + level)
-            exec('tmp' + level + '.append([])')
-            print(t)
-            
-            assert nlevel <= 9, f'{index}: You can not go deeper than 9'
 
-            level += '[-1]'
-            nlevel += 1
-            continue
-        
-        if character == ',':
-            exec('tmp' + level + '.append(None)')
-            continue
+def conv(object: Object) -> Any | Types:
+    if object.value.isdigit():
+        object.value = int(object.value)
+        object.type = Types.INTEGER
 
-        if character == ']':
-            level = level[:-4]
-            nlevel -= 1
-            continue
+    elif is_float(object.value):
+        object.value = float(object.value)
+        object.type = Types.FLOAT
 
-    print(tmp)
+    elif object.value in list(punctuation):
+        object.type = Types.PUNCTUATION
+    
+    elif object.value.upper() in ('TRUE', 'FALSE'):
+        object.type = Types.BOOLEAN
+        object.value = True if object.value.upper() == "TRUE" else False
 
-if __name__ == '__main__':
-    test_reader()
+    else:
+        object.type = Types.KEYWORD
+
+
+def lexer(filepath):
+    lines = read(filepath)
+
+    lexed: list[list[Object]] = []
+    point, in_str = None, False
+
+    for row, line in enumerate(lines):
+        line = list(line)
+        line[-1] = '' if line[-1] == '\n' else line[-1]
+        line = ''.join(line)
+
+        lexed.append([Object()])
+
+        for column, character in enumerate(line):
+            if character == '"':
+                if len(lexed) != 0:
+                    if lexed[row][-1].value != Any and lexed[row][-1].type == Types.UNDEFINED:
+                        lexed[row][-1].value += character
+                        continue
+
+                in_str = not in_str
+                point = column
+
+            elif in_str:
+                if lexed[row][-1].type == Types.UNDEFINED:
+                    lexed[row][-1].type = Types.STRING
+                    lexed[row][-1].value = ''
+                lexed[row][-1].value += character
+
+            elif character == ' ':
+                if lexed[row][-1].type == Types.UNDEFINED:
+                    conv(lexed[row][-1])
+                
+                lexed[row].append(Object())
+
+            else:
+                if lexed[row][-1].value == Any:
+                    lexed[row][-1].value = ''
+                lexed[row][-1].value += character
+
+        if lexed[row][-1].type == Types.UNDEFINED:
+            conv(lexed[row][-1])
+
+        if in_str:
+            print(f'{filepath}:{row}:{point}: string started but didn\'t end.')
+            exit(0)
+
+    return lexed
