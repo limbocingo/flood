@@ -1,2 +1,0 @@
-print "hello world" [ "test" 1949 4.38 true false ]
-print "my name is jeff"

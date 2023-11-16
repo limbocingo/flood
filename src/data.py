@@ -8,8 +8,8 @@ class Types(Enum):
     STRING = 1
     FUNCTION = 2
     BOOLEAN = 3
-    LIST = 4
-    NONE = 5
+    ARRAY = 4
+    NULL = 5
     PUNCTUATION = 6
     KEYWORD = 7
     UNDEFINED = 8
