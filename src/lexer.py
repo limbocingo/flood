@@ -79,7 +79,7 @@ def lexer(filepath) -> list[list[Object]]:
             conv(objects[row][-1])
 
         if in_str:
-            print(f'{filepath}:{row}:{point}: string started but didn\'t end.')
+            print(f'{filepath}:{row}:{point}: string was started but not closed.')
             exit(0)
 
         array  = []
@@ -90,14 +90,13 @@ def lexer(filepath) -> list[list[Object]]:
         for row, line in enumerate(objects):
             array.append([])
             for column, object in enumerate(line):
-                # TODO: 'Object' object has no attribute 'append'
                 if object.value == '[':
                     if isinstance(eval(level), Object):
                         exec(level + '.value' + '.append(Object(Types.ARRAY, []))')
-
-                    exec(level + '.append(Object(Types.ARRAY, []))')
-
-                    level += '[-1]'
+                        level += '.value[-1]'
+                    else:
+                        exec(level + '.append(Object(Types.ARRAY, []))')
+                        level += '[-1]'
 
                     in_arr = True
 
@@ -116,15 +115,9 @@ def lexer(filepath) -> list[list[Object]]:
                     level = level[:-i]
 
                 else:
-                    ...
-                    #print(level)
-                    # try:
-                    #     exec(level + '.value' + '.append(object.value)')
-                    # except AttributeError:
-                    #     exec(level + '.append(object.value)')
+                    try:
+                        exec(level + '.value' + '.append(object)')
+                    except AttributeError:
+                        exec(level + '.append(object)')
 
-
-        #pprint(array)
-
-
-    return objects
+    return array
