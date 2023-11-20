@@ -4,10 +4,16 @@ from typing import Any
 from src.data import Object, Types
 from src.file import read_by_lines
 
-from pprint import pprint
+
+def replace(string: str, character: str, index: int) -> str:
+    line        = list(string)
+    line[index] = character
+    line        = ''.join(line)
+    
+    return line
 
 
-def is_float(element: any) -> bool:
+def is_float(element: Any) -> bool:
     try:
         float(element)
         return True
@@ -26,7 +32,7 @@ def conv(object: Object) -> Any | Types:
 
     elif object.value in list(punctuation):
         object.type = Types.PUNCTUATION
-
+        
     elif object.value.upper() in ('TRUE', 'FALSE'):
         object.type = Types.BOOLEAN
         object.value = True if object.value.upper() == "TRUE" else False
@@ -42,16 +48,22 @@ def lexer(filepath) -> list[list[Object]]:
     point, in_str = None, False
 
     for row, line in enumerate(lines):
-        line     = list(line)
-        line[-1] = '' if line[-1] == '\n' else line[-1]
-        line     = ''.join(line)
+        line = replace(line, '', -1) if line[-1] == '\n' else line
+        
+        if not len(line.replace(' ', '')):
+            objects.append([])
+            continue
+
+        while line[-1] == ' ':
+            line = replace(line, '', -1)
 
         objects.append([Object()])
-
+        
         for column, character in enumerate(line):
             if character == '"':
                 if len(objects) != 0:
-                    if objects[row][-1].value != Any and objects[row][-1].type == Types.UNDEFINED:
+                    if objects[row][-1].value != Any and \
+                       objects[row][-1].type  == Types.UNDEFINED:
                         objects[row][-1].value += character
                         continue
 
@@ -65,10 +77,13 @@ def lexer(filepath) -> list[list[Object]]:
                 objects[row][-1].value += character
 
             elif character == ' ':
-                if objects[row][-1].type == Types.UNDEFINED:
+                if objects[row][-1].type  == Types.UNDEFINED and \
+                   objects[row][-1].value != Any:
                     conv(objects[row][-1])
 
-                objects[row].append(Object())
+                
+                if objects[row][-1].value != Any:
+                    objects[row].append(Object())
 
             else:
                 if objects[row][-1].value == Any:

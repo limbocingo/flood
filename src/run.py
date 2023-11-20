@@ -1,4 +1,5 @@
 import sys
+import json
 
 
 def main(args: list[str]):
@@ -10,6 +11,14 @@ def main(args: list[str]):
     assert len(args) >= 2, "ERROR: no file found."
     
     objects = lexer(args[1])
+    with open(f'objects.json', 'w') as fw:
+        r = []
+        for index, line in enumerate(objects):
+            for object in line:
+                r.append({'line': index + 1, 'type': object.type.value, 'value': object.value})
+
+        json.dump(r, fw, indent=4, sort_keys=True)
+
     execute(objects)
 
 

@@ -1,0 +1,52 @@
+[
+    {
+        "line": 1,
+        "type": 8,
+        "value": "test"
+    },
+    {
+        "line": 1,
+        "type": 7,
+        "value": "="
+    },
+    {
+        "line": 1,
+        "type": 2,
+        "value": "testing"
+    },
+    {
+        "line": 3,
+        "type": 8,
+        "value": "func"
+    },
+    {
+        "line": 3,
+        "type": 8,
+        "value": "print"
+    },
+    {
+        "line": 4,
+        "type": 8,
+        "value": "out"
+    },
+    {
+        "line": 4,
+        "type": 8,
+        "value": "test"
+    },
+    {
+        "line": 5,
+        "type": 8,
+        "value": "end"
+    },
+    {
+        "line": 7,
+        "type": 8,
+        "value": "call"
+    },
+    {
+        "line": 7,
+        "type": 8,
+        "value": "print"
+    }
+]

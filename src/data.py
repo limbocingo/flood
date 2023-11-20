@@ -4,19 +4,18 @@ from typing import Any
 
 
 class Types(Enum):
-    INTEGER = 0
-    STRING = 1
-    FUNCTION = 2
-    BOOLEAN = 3
-    ARRAY = 4
-    NULL = 5
-    PUNCTUATION = 6
-    KEYWORD = 7
-    UNDEFINED = 8
-    FLOAT = 9
+    INTEGER     = 0
+    FLOAT       = 1
+    STRING      = 2
+    BOOLEAN     = 4
+    ARRAY       = 5
+    NULL        = 6
+    PUNCTUATION = 7
+    KEYWORD     = 8
+    UNDEFINED   = 9
 
 
 @dataclass
 class Object:
     type: Types = Types.UNDEFINED
-    value: Any = Any
+    value: Any  = Any

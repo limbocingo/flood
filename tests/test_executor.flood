@@ -1,1 +1,7 @@
-out "josep casaramona"
+test = "testing"
+
+func print
+    out test
+end
+
+call print
