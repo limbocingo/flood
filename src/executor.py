@@ -4,12 +4,20 @@ from string import punctuation
 
 from src.data import Object, Types
 
+BUILTIN = [
+    'out',
+    'call',
+    'func',
+    'end'
+]
+
 VARS = {}
+VAR  = False
 
 FUNCS = {}
-FUNC = None
+FUNC  = None
 
-CALC = []
+CALC  = []
 
 class BuiltFunctions:
 
@@ -18,6 +26,12 @@ class BuiltFunctions:
         for arg in args:
             stdout.write(str(arg.value) + ' ')
         stdout.write('\n')
+
+
+def get_arg(args: list, arg: int):
+    try: return args[arg].value
+    except IndexError: return
+
 
 def builtin(token, args) -> FunctionType:
     global FUNCS, FUNC
@@ -66,27 +80,19 @@ def builtin(token, args) -> FunctionType:
     elif token == 'end':
         FUNC = None
 
-    else:
-        print('ERROR: keyword not found.')
-        exit(0) 
+
+def punc(token):
+    pass
 
 
 def execute(objects: list[list[Object]]) -> None:
     for row, line in enumerate(objects):
         for column, object in enumerate(line):
-            if object.type == Types.KEYWORD:
-                if object.value in list(punctuation):
-                    continue
-
-                try: objects[row][column+1].value = '='; continue
-                except IndexError: pass
-                args = []  
-                for i in line[column+1:]:
-                    args.append(i)
-
-                builtin(object.value, args)
-
-            elif object.type == Types.PUNCTUATION:
+            if object.type is Types.KEYWORD:
+                builtin(object.value, line[column+1:])
+            
+            elif object.type is Types.PUNCTUATION:
                 if object.value == '=':
-                    try: VARS[objects[row][column-1].value] = objects[row][column+1]
-                    except IndexError: print(f'ERROR: you did not assigned a value to `{objects[row][column-1].value}`'); exit(0)
+                    if len
+
+    print(VARS)

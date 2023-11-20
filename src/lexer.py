@@ -134,5 +134,4 @@ def lexer(filepath) -> list[list[Object]]:
                         exec(level + '.value' + '.append(object)')
                     except AttributeError:
                         exec(level + '.append(object)')
-
     return array
