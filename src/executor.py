@@ -23,6 +23,7 @@ class BuiltFunctions:
 
     @staticmethod
     def out(args) -> None:
+        print(args)
         for arg in args:
             stdout.write(str(arg.value) + ' ')
         stdout.write('\n')
@@ -81,18 +82,10 @@ def builtin(token, args) -> FunctionType:
         FUNC = None
 
 
-def punc(token):
-    pass
-
-
 def execute(objects: list[list[Object]]) -> None:
     for row, line in enumerate(objects):
         for column, object in enumerate(line):
             if object.type is Types.KEYWORD:
                 builtin(object.value, line[column+1:])
-            
-            elif object.type is Types.PUNCTUATION:
-                if object.value == '=':
-                    if len
 
     print(VARS)

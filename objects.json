@@ -2,12 +2,12 @@
     {
         "line": 1,
         "type": 8,
-        "value": "test"
+        "value": "var"
     },
     {
         "line": 1,
-        "type": 7,
-        "value": "="
+        "type": 8,
+        "value": "test"
     },
     {
         "line": 1,
@@ -42,11 +42,11 @@
     {
         "line": 7,
         "type": 8,
-        "value": "call"
+        "value": "out"
     },
     {
         "line": 7,
-        "type": 8,
-        "value": "print"
+        "type": 5,
+        "value": "[Object(type=<Types.INTEGER: 0>, value=32), Object(type=<Types.INTEGER: 0>, value=33)]"
     }
 ]

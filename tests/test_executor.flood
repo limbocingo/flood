@@ -1,7 +1,7 @@
-test = "testing"
+var test "testing"
 
 func print
     out test
 end
 
-call print
+out [ 32 [ ] 33 ]
