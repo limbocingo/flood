@@ -9,23 +9,26 @@ from typing import Any
 class Types(Enum):
     INTEGER     = 'INT'
     FLOAT       = 'FLOAT'
-    STRING      = 'STRING'
+    STRING      = 'STR'
     BOOLEAN     = 'BOOL'
-    ARRAY       = 'LIST'
+    ARRAY       = 'ARR'
     NULL        = 'NULL'
     PUNCTUATION = 'PUNC'
     KEYWORD     = 'KEYW'
     BUILTIN     = 'BUILT'
-    UNDEFINED   = 'UNDEFINED'
+    UNDEFINED   = '?'
 
 
 class Keywords(Enum):
-    TRUE  = 'true'
-    FALSE = 'false'
+    TRUE      = 'TRUE'
+    FALSE     = 'FALSE'
+    
+    NULL      = 'NULL'
 
+    FUNCTION  = 'FUNC'
 
 
 @dataclass
 class Object:
     type: Types = Types.UNDEFINED
-    value: Any  = Any
+    value: object  = Any

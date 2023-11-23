@@ -8,13 +8,12 @@ class Types(Enum):
     INTEGER = 0
     STRING = 1
     FUNCTION = 2
-    BOOLEAN = 3
-    LIST = 4
-    NONE = 5
-    PUNCTUATION = 6
-    KEYWORD = 7
-    UNDEFINED = 8
-    FLOAT = 9
+    LIST = 3
+    NONE = 4
+    PUNCTUATION = 5
+    KEYWORD = 6
+    UNDEFINED = 7
+    FLOAT = 8
 
 
 @dataclass

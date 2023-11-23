@@ -43,10 +43,7 @@ def lex_obj(lines: list[str]):
             obj = objs[row][-1]
 
             if ch == "\"":
-                if (obj.type, obj.value) != undefined: # don't continue string logic
-                                                       # possibly its using a quote for keyword.
-                    
-                    continue
+                assert (obj.type, obj.value) != undefined, "you can't start a string in this space."
 
                 start_char_arr = not start_char_arr # true:  started 
                                                     # false: ended
