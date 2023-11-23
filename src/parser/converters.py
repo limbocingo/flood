@@ -2,6 +2,7 @@
 Functions and utilities for converting data.
 """
 from typing import Any
+from src.parser.data import Punctuation
 
 
 def floatc(element: Any) -> bool:
@@ -22,3 +23,7 @@ def boolc(element: Any) -> bool:
 
 def nullc(element: Any) -> None:
     return None
+
+
+def puncc(element: Any) -> Punctuation:
+    ...

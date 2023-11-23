@@ -15,10 +15,9 @@ TYPESC = (
         (Types.INTEGER,     int,   element.isdigit()),
         (Types.FLOAT,       float, floatc(element)),
         (Types.PUNCTUATION, None,  element in punctuation),
-        (Types.BOOLEAN,     None,  element in BOOL),
+        (Types.BOOLEAN,     boolc, element in BOOL),
         (Types.NULL,        nullc, element == 'NULL'),
         (Types.BUILTIN,     None,  element in KEYW),
-        (Types.KEYWORD,     None,  1)
     )
 
 
@@ -27,7 +26,7 @@ def typec(element: Any) -> tuple[Types, FunctionType | None]:
 
     for type, func, condition in typesc:
         if condition: return type, func
-    return Types.KEYWORD, 
+    return Types.KEYWORD, None
 
 
 def conv(object: Object) -> Object:

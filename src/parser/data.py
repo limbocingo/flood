@@ -19,13 +19,28 @@ class Types(Enum):
     UNDEFINED   = '?'
 
 
-class Keywords(Enum):
-    TRUE      = 'TRUE'
-    FALSE     = 'FALSE'
-    
-    NULL      = 'NULL'
+class Operators(Enum):
+    PLUS          = '+'
+    MINUS         = '-'
+    MULTIPLY      = '*'
+    RAISE         = '^'
 
-    FUNCTION  = 'FUNC'
+
+class Punctuation(Enum):
+    BRACKET_R     = ')'
+    BRACKET_L     = '('
+    SQR_BRACKET_L = '['
+    SQR_BRACKET_R = ']'
+
+
+class Keywords(Enum):
+    TRUE     = 'TRUE'
+    FALSE    = 'FALSE'
+    
+    NULL     = 'NULL'
+
+    FUNCTION = 'FUNC'
+    VARIABLE = 'VAR'
 
 
 @dataclass
