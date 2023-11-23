@@ -4,34 +4,18 @@ Lexer for the Flood programming language.
 from typing import Any
 
 from src.parser.data import Object, Types
-from src.parser.help import repl
-from src.parser.types import conv
+from src.parser.help import repl, errast
+from src.parser.typesf import conv
 
-from src.file import read_by_lines
+from src.parser.help import readf
 
+# keywords, ints, floats, strings
+# arrays
 
-def cleanlns(lines: list[str]):
-    result = []
-    
-    for line in enumerate(lines):
-        line = repl(line, "", -1, line[-1] == '\n')
-
-        if not len(line.replace(" ", "")):
-            return
-        
-        while line[-1] == " ":
-            line = repl(line, "", -1)
-
-        result.append(line)
-
-    return result
-
-
-def lex_obj(lines: list[str]):
+def tokenize(path: str) -> list[list[Object]]:
+    lines = readf(path)
     objs: list[list[Object]] = []
     
-    curr_point = None # where the string started or ended
-                      # used for error messages
     start_char_arr = False
 
     undefined = (Types.UNDEFINED, Any)
@@ -43,21 +27,16 @@ def lex_obj(lines: list[str]):
             obj = objs[row][-1]
 
             if ch == "\"":
-                assert (obj.type, obj.value) != undefined, "you can't start a string in this space."
-
-                start_char_arr = not start_char_arr # true:  started 
-                                                    # false: ended
-                curr_point = col
+                start_char_arr = not start_char_arr 
 
             elif start_char_arr:
                 if obj.type == Types.UNDEFINED:
                     obj.type, obj.value = Types.STRING, ""
-                obj += ch
+                obj.value += ch
 
             elif ch == ' ':
-                if obj.value != Any:
+                if obj.type == Types.UNDEFINED and obj.value:
                     conv(objs[row][-1])
-                    continue
 
                 if (obj.type, obj.value) == undefined:
                     continue
@@ -67,23 +46,26 @@ def lex_obj(lines: list[str]):
             else:
                 if obj.value == Any:
                     obj.value = ''
+
+                errast("attempted to end a string without adding a space **after**", not start_char_arr and obj.type == Types.STRING, row = row + 1, col = col)
+                
                 obj.value += ch
 
         if obj.type == Types.UNDEFINED:
             conv(objs[row][-1])
 
-        if start_char_arr:
-            print(f'{row}:{curr_point}: you did not closed the string')
-            exit(0)
+        errast("close the string you started.", start_char_arr, row = row + 1)
 
         objs[row][-1] = obj
 
-def lex_arr():
-    ...
+    return objs
+
+
+def parse(): ...
 
 
 def lexer(filepath) -> list[list[Object]]:
-    lines = cleanlns(read_by_lines(filepath))
+    lines = cleanlns(readlns(filepath))
 
     objects: list[list[Object]] = []
     point, in_str = None, False

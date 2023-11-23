@@ -31,7 +31,8 @@ class Punctuation(Enum):
     BRACKET_L     = "("
     SQR_BRACKET_L = "["
     SQR_BRACKET_R = "]"
-    COMMA         = "\""
+    COMMA         = ","
+    POINT         = "."
 
 
 class Keywords(Enum):

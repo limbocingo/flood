@@ -1,7 +1,1 @@
-var test "testing"
-
-func print
-    out test
-end
-
-out [ 32 [ ] 33 ]
+" caca "fdsfmnd
