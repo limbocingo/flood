@@ -7,40 +7,41 @@ from typing import Any
 
 
 class Types(Enum):
-    INTEGER     = 'INT'
-    FLOAT       = 'FLOAT'
-    STRING      = 'STR'
-    BOOLEAN     = 'BOOL'
-    ARRAY       = 'ARR'
-    NULL        = 'NULL'
-    PUNCTUATION = 'PUNC'
-    KEYWORD     = 'KEYW'
-    BUILTIN     = 'BUILT'
-    UNDEFINED   = '?'
+    INTEGER     = "INT"
+    FLOAT       = "FLOAT"
+    STRING      = "STR"
+    BOOLEAN     = "BOOL"
+    ARRAY       = "ARR"
+    NULL        = "NULL"
+    PUNCTUATION = "PUNC"
+    KEYWORD     = "KEYW"
+    BUILTIN     = "BUILT"
+    UNDEFINED   = "?"
 
 
 class Operators(Enum):
-    PLUS          = '+'
-    MINUS         = '-'
-    MULTIPLY      = '*'
-    RAISE         = '^'
+    PLUS     = "+"
+    MINUS    = "-"
+    MULTIPLY = "*"
+    RAISE    = "^"
 
 
 class Punctuation(Enum):
-    BRACKET_R     = ')'
-    BRACKET_L     = '('
-    SQR_BRACKET_L = '['
-    SQR_BRACKET_R = ']'
+    BRACKET_R     = ")"
+    BRACKET_L     = "("
+    SQR_BRACKET_L = "["
+    SQR_BRACKET_R = "]"
+    COMMA         = "\""
 
 
 class Keywords(Enum):
-    TRUE     = 'TRUE'
-    FALSE    = 'FALSE'
+    TRUE     = "TRUE"
+    FALSE    = "FALSE"
     
-    NULL     = 'NULL'
+    NULL     = "NULL"
 
-    FUNCTION = 'FUNC'
-    VARIABLE = 'VAR'
+    FUNCTION = "FUNC"
+    VARIABLE = "VAR"
 
 
 @dataclass
