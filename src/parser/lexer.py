@@ -12,7 +12,7 @@ from src.parser.help import readf
 # keywords, ints, floats, strings
 # arrays
 
-def tokenize(path: str) -> list[list[Object]]:
+def lexer(path: str) -> list[list[Object]]:
     lines = readf(path)
     objs: list[list[Object]] = []
     
@@ -27,6 +27,10 @@ def tokenize(path: str) -> list[list[Object]]:
             obj = objs[row][-1]
 
             if ch == "\"":
+                errast("you have to start the string in a new object", 
+                       obj.value != Any and obj.type != Types.STRING, 
+                       row+1, col+1)
+
                 start_char_arr = not start_char_arr 
 
             elif start_char_arr:
@@ -47,14 +51,18 @@ def tokenize(path: str) -> list[list[Object]]:
                 if obj.value == Any:
                     obj.value = ''
 
-                errast("attempted to end a string without adding a space **after**", not start_char_arr and obj.type == Types.STRING, row = row + 1, col = col)
+                errast("attempted to end a string without adding a space **after**", 
+                       not start_char_arr and obj.type == Types.STRING, 
+                       row = row + 1, col = col)
                 
                 obj.value += ch
 
         if obj.type == Types.UNDEFINED:
             conv(objs[row][-1])
 
-        errast("close the string you started.", start_char_arr, row = row + 1)
+        errast("close the string you started.", 
+               start_char_arr, 
+               row = row + 1)
 
         objs[row][-1] = obj
 

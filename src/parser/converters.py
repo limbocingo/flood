@@ -22,7 +22,7 @@ def boolc(element: Any) -> bool:
         return False
 
 
-def nullc() -> None:
+def nullc(element: Any) -> None:
     return None
 
 
