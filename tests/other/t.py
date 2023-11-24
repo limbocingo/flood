@@ -1,6 +1,6 @@
 import sys
 sys.path.append('.')
 
-from src.parser.lexer import lexer
+from src.parser.file import lexer
 
-print(lexer('tests/test_executor.flood'))
+lexer('tests/test_executor.flood')

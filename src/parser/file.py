@@ -1,5 +1,5 @@
 """
-Lexer for the Flood programming language.
+File manager for the Flood programming language.
 """
 from typing import Any
 
@@ -11,6 +11,14 @@ from src.parser.help import readf
 
 # keywords, ints, floats, strings
 # arrays
+
+class Lexer:
+    
+    def __init__(self, filepath: str) -> None:
+        self.filepath = filepath
+        self.lines    = readf(filepath)
+
+    def 
 
 def lexer(path: str) -> list[list[Object]]:
     lines = readf(path)
@@ -69,10 +77,15 @@ def lexer(path: str) -> list[list[Object]]:
     return objs
 
 
-def parse(): ...
+class Parser:
 
+    def __init__(tokens: list[list[Object]]) -> None:
+        self.tokens = tokens
+    
+    def arrays(self):
+        ...
 
-def lexer(filepath) -> list[list[Object]]:
+def __lexer(filepath) -> list[list[Object]]:
     lines = cleanlns(readlns(filepath))
 
     objects: list[list[Object]] = []

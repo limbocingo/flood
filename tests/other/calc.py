@@ -1,4 +1,9 @@
-z = '1 + 2 * 3 ( 1 + 2 )'
+import sys
+sys.path.append('.')
+
+from src.parser.file import lexer
+
+lexed_file = lexer('tests/test_executor.flood')
 
 i = 0
 l = 0
