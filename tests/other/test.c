@@ -1,43 +1,42 @@
-#define _GNU_SOURCE
 #include <stdio.h>
-#include <stdlib.h>
 
-char ** readf(char *filepath, char* lines[]) {
-    FILE * fp;
+char * lines[] = {};
 
-    char * line = NULL;
-    size_t len  = 0;
-    
-    ssize_t line_len;
 
-    fp = fopen(filepath, "r");
-
-    if (fp == NULL) {
+void readf(char * filepath) {
+    FILE * file = fopen(filepath, "r");
+    if (file == NULL) {
         printf("ERROR:%s: file not found.\n", filepath);
-        exit(1);
+        return;
     }
 
-    int i = 0;
-    while ((line_len = getline(&line, &len, fp)) != -1) {
-        printf("%s", lines[i]);
-        lines[i] = line;
-        i++;
+    fseek(file, 0L, SEEK_END);     // set postion end 
+    long int lenght = ftell(file); // get size
+    fseek(file, 0L, SEEK_SET);     // set postion start
+
+    if (lenght == 0) {
+        printf("INFO:%s: file is empty, closing...\n", filepath);
+        return;
     }
 
-    fclose(fp);
-    if (line)
-        free(line);
-    
-    return lines;
+    char * line;
+    size_t llen = 0;
+
+    int lnum = 0;
+    while (getline(&line, &llen, file) != -1) {
+        lines[lnum] = line;
+        printf("%i", lnum);
+        printf("%s", lines[lnum]);
+        lnum++;
+    }
+    printf("%s\n", lines[1]);
+
+    fclose(file);
 }
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    char * path    = "test.flood";
-    char * lines[];
-    readf(path, lines);
-    // int  size     = sizeof(lines) / sizeof(lines[0]);
-    printf("%s\n", lines[0]);
+    readf(argv[1]);
 
     return 0;
 }
