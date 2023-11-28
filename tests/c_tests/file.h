@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-#define MAX_LINE_SIZE 79
+extern char *path;
+extern long int flines;
 
-extern char **readf(char *path);
-int countlf(FILE *file);
+extern FILE *openf(char *path);
+extern char **readf(FILE *file);

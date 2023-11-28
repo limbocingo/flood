@@ -6,6 +6,9 @@
 
 #define MAX_LINE_SIZE 79
 
+char *path;
+long int flines;
+
 long int sizef(FILE *file)
 {
     fseek(file, 0L, SEEK_END);    // set postion end
@@ -15,38 +18,42 @@ long int sizef(FILE *file)
     return sizef;
 }
 
-FILE *openfr(char *path)
+FILE *openf(char *filepath)
 {
     FILE *file;
     long int size;
 
+    path = filepath;
+
     file = fopen(path, "r");
     if (file == NULL)
     {
-        printf("NOTFOUND: ERROR: file not found.\n", path);
+        printf("ERROR: file not found\n");
         exit(1);
     }
 
     size = sizef(file);
     if (size == 0)
     {
-        printf("%s: INFO: file is empty, closing...\n", path);
+        printf("%s: INFO: file is empty, closing\n", filepath);
         exit(1);
     }
 
     return file;
 }
 
-int countlf(FILE *file)
+long int countlf(FILE *file)
 {
     char cchar;
-    int lines;
+    long int lines;
 
-    lines = 1;
+    lines = 0;
     while ((cchar = getc(file)) != EOF)
     {
         if (cchar == '\n')
+        {
             lines++;
+        }
     }
 
     fseek(file, 0L, SEEK_SET); // set postion start
@@ -54,28 +61,31 @@ int countlf(FILE *file)
     return lines;
 }
 
-char **readf(char *path)
+char **readf(FILE *file)
 {
-    FILE *file;
-
-    long int size;
+    long int size, currl, nlines;
     char **lines, content[MAX_LINE_SIZE];
-    int currl;
 
-    file = openfr(path);
-    size = sizef(file);
+    printf("%s: INFO: file opened\n", path);
 
-    lines = malloc(countlf(file) * sizeof(char *));
+    size = sizef(file) + 1;
+    nlines = countlf(file) + 1;
+
+    printf("%s: INFO: lines registered `%li`\n", path, nlines);
+
+    lines = malloc(nlines * sizeof(char *));
     currl = 0;
     while (fgets(content, size, file) != NULL)
     {
         lines[currl] = malloc(sizeof(content)); // allocate memory
 
         strncpy(lines[currl], content, sizeof(content)); // copy the line in the array
+        printf("%s:%li: INFO: new line added\n", path, currl);
 
-        lines[3] = '\0';
         currl++;
     }
+    flines = nlines;
+    lines[nlines] = '\0';
 
     fclose(file);
 

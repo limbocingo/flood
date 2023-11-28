@@ -1,0 +1,44 @@
+//
+// This file is a example.
+// Is used to guide the programming
+// language syntax and complexity.
+//
+
+
+// -----------
+// SYSTEM LIBS
+// -----------
+#include "std.flood"
+
+// -----------
+// LOCAL LIBS
+// -----------
+#import  "mylocal.flood"
+
+// -----------
+// FUNCTION EXAMPLE
+// -----------
+function fibbonaci lenght:int --> "list[int]" // specify the return and the type of the arg is optional. 
+    var result [1, 2]
+
+    var i 0
+    for i lenght // FOR LOOP
+        add result result[i-1] + result[i-2]
+    end
+
+    return result
+end
+
+// -----------
+// `main` is the function
+// where you call your program
+// -----------
+function main
+    var fibbo
+    var num
+
+    fibbo = fibbonaci()
+    for num fibbo
+        out num
+    end
+end
