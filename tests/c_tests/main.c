@@ -11,6 +11,7 @@ char *lines[] = {};
 typedef struct
 {
     char *name;
+    char *value;
     enum Type
     {
         KEYWORD,
@@ -21,7 +22,7 @@ typedef struct
     } type;
 } Token;
 
-
+struct Token tokens[flines];
 
 Token **lexer(char *lines[])
 {
@@ -30,26 +31,37 @@ Token **lexer(char *lines[])
     char cchar;
     int lsize;
 
-    printf("\n");
-    ctoken = malloc(MAX_TOKEN_SIZE);
-    for (int nline = 0; nline < flines; nline++)
-    {
-        line = lines[nline];
-        lsize = strlen(line);
-        printf("%d", lsize);
+    int c;
 
-        for (int nchar = 0; nchar < lsize; nchar++) {
-            cchar = line[nchar];
-            printf("%s", ctoken);
-            if (cchar == ' ') {
-                ctoken = "";
-            }
-            else {
-                strncat(ctoken, cchar, 1);
-            }
-        }
-    }
-    printf("\n");
+
+    c = 0;
+    Token **tokens[flines][20];
+    tokens = malloc(sizeof(Token) + 3 * sizeof(potmeter *));
+    tokens[0][0].name = "testing";
+    tokens[0][0].type = KEYWORD;
+
+    printf("%s", tokens[0][0].name);
+
+    // printf("\n");
+    // for (int nline = 0; nline < flines; nline++)
+    // {
+    //     line = lines[nline];
+    //     lsize = strlen(line);
+    //     printf("%d", lsize);
+
+    //     for (int nchar = 0; nchar < lsize; nchar++) {
+    //         cchar = line[nchar];
+    //         printf("%s", tokens[line][c]);
+    //         if (cchar == ' ') {
+    //             c++;
+    //             tokens[nline][c];
+    //         }
+    //         else {
+    //             strncat(tokens[nline][c], &cchar, 1);
+    //         }
+    //     }
+    // }
+    // printf("\n");
 }
 
 int main(int argc, char *argv[])
