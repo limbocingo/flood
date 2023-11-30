@@ -52,8 +52,13 @@ int main(int argc, char *argv[])
     FILE *file;
 
     file = openf(argv[1]);
-    lines = readf(file, argv[1]);
-
+    // lines = readf(file, argv[1]);
+    size_t *_liness = liness(file);
+    size_t linesc = sizeof(_liness) * sizeof(_liness[0]);
+    printf("%u\n", linesc);
+    for (long int i = 0; i < linesc; i++) {
+        printf("%u `%d`\n", i, _liness[i]);
+    }
     //lexer(lines);
 
     return 0;
