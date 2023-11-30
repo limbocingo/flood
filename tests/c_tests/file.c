@@ -6,8 +6,6 @@
 
 #define MAX_LINE_SIZE 79
 
-char *path;
-long int flines;
 
 long int sizef(FILE *file)
 {
@@ -18,12 +16,10 @@ long int sizef(FILE *file)
     return sizef;
 }
 
-FILE *openf(char *filepath)
+FILE *openf(char *path)
 {
     FILE *file;
     long int size;
-
-    path = filepath;
 
     file = fopen(path, "r");
     if (file == NULL)
@@ -35,7 +31,7 @@ FILE *openf(char *filepath)
     size = sizef(file);
     if (size == 0)
     {
-        printf("%s: INFO: file is empty, closing\n", filepath);
+        printf("%s: INFO: file is empty, closing\n", path);
         exit(1);
     }
 
@@ -61,12 +57,15 @@ long int countlf(FILE *file)
     return lines;
 }
 
-char **readf(FILE *file)
+/*
+    TODO: resolve stack smashing detected
+*/
+char **readf(FILE *file, char *path)
 {
     long int size, currl, nlines;
     char **lines, content[MAX_LINE_SIZE];
 
-    printf("%s: INFO: file opened\n", path);
+    printf("%s: INFO: file open\n", path);
 
     size = sizef(file) + 1;
     nlines = countlf(file) + 1;
@@ -78,15 +77,15 @@ char **readf(FILE *file)
     while (fgets(content, size, file) != NULL)
     {
         lines[currl] = malloc(sizeof(content)); // allocate memory
-
         strncpy(lines[currl], content, sizeof(content)); // copy the line in the array
-        printf("%s:%li: INFO: new line added\n", path, currl);
-
+        
+        printf("%s: INFO: line added `%li`\n", path, currl);
+        
         currl++;
     }
-    flines = nlines;
     lines[nlines] = '\0';
 
+    printf("%s: INFO: file closed\n", path);
     fclose(file);
 
     return lines;

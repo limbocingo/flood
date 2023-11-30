@@ -6,8 +6,6 @@
 
 #define MAX_TOKEN_SIZE 70
 
-char *lines[] = {};
-
 typedef struct
 {
     char *name;
@@ -20,27 +18,11 @@ typedef struct
         STRING,
         INTEGER
     } type;
-} Token;
-
-struct Token tokens[flines];
+} Token[5];
 
 Token **lexer(char *lines[])
 {
-    char *line;
-    char *ctoken;
-    char cchar;
-    int lsize;
-
-    int c;
-
-
-    c = 0;
-    Token **tokens[flines][20];
-    tokens = malloc(sizeof(Token) + 3 * sizeof(potmeter *));
-    tokens[0][0].name = "testing";
-    tokens[0][0].type = KEYWORD;
-
-    printf("%s", tokens[0][0].name);
+    Token tokens[5];
 
     // printf("\n");
     // for (int nline = 0; nline < flines; nline++)
@@ -70,8 +52,9 @@ int main(int argc, char *argv[])
     FILE *file;
 
     file = openf(argv[1]);
-    lines = readf(file);
+    lines = readf(file, argv[1]);
 
-    lexer(lines);
+    //lexer(lines);
+
     return 0;
 }
