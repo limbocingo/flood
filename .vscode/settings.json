@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.t": "plaintext",
+        "stdio.h": "c",
+        "*.floood": "flood"
+    }
+}

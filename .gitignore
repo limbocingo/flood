@@ -1,2 +1,6 @@
 __pycache__/
 flood.*
+flood
+*.exe
+*.out
+*.obj

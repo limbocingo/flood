@@ -1,109 +1,126 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 #include "file.h"
 
-#define MAX_LINE_SIZE 1024
+const char *F_path;
+size_t      F_lines;
 
-long int sizef(FILE *file)
+size_t
+f_size(FILE *f)
 {
-    fseek(file, 0L, SEEK_END);    // set postion end
-    long int sizef = ftell(file); // get size
-    fseek(file, 0L, SEEK_SET);    // set postion start
-
-    return sizef;
-}
-
-FILE *openf(char *path)
-{
-    FILE *file;
-    long int size;
-
-    file = fopen(path, "r");
-    if (file == NULL)
-    {
-        printf("ERROR: file not found\n");
-        exit(1);
-    }
-
-    size = sizef(file);
-    if (size == 0)
-    {
-        printf("%s: INFO: file is empty, closing\n", path);
-        exit(1);
-    }
-
-    return file;
-}
-
-long int countlf(FILE *file)
-{
-    char cchar;
-    long int lines;
-
-    lines = 0;
-    while ((cchar = getc(file)) != EOF) if (cchar == '\n') lines++;
-
-    fseek(file, 0L, SEEK_SET); // set postion start
-
-    return lines;
-}
-
-size_t *liness(FILE *file) {
-    char cchar;
-    long int current_size, filelc, cline;
+    size_t f_size;
     
-    filelc = countlf(file);
-    size_t *lines;
+    fseek(f, 0L, SEEK_END);
+    f_size = ftell(f);
+    fseek(f, 0L, SEEK_SET);
 
-    lines = malloc(filelc * sizeof(size_t *));
-    current_size = 0;
-    cline = 0;
-    while ((cchar = fgetc(file)) != EOF) {
-        if (cchar == '\n') {
-            lines[cline] = current_size + 1;
-            current_size = 0;
-            cline++;
-        }
-        current_size++;
-    }
-    printf("%li\n", cline);
-
-    return lines;
+    return f_size;
 }
 
-/*
-    TODO: resolve stack smashing detected
-*/
-char **readf(FILE *file, char *path)
+size_t
+f_lines_count(FILE *f)
 {
-    long int size, currl, nlines;
-    size_t sizec;
-    char **lines, content[MAX_LINE_SIZE];
+    char   f_curr_char;
+    size_t f_lines;
 
-    printf("%s: INFO: file open\n", path);
-
-    size = sizef(file) + 1;
-    nlines = countlf(file) + 6;
-
-    printf("%s: INFO: file lines: `%li`\n", path, nlines);
-
-    lines = malloc(nlines * sizeof(char *));
-    currl = 0;
-    while (fgets(content, size, file) != NULL)
+    f_lines = 0;   
+    while ( ( f_curr_char = getc(f) ) != EOF ) 
     {
-        lines[currl] = malloc(MAX_LINE_SIZE); // 1024
-        strcpy(lines[currl], content);        // copy content >> array
-
-        printf("%s: INFO: line added `%li`\n", path, currl);
-
-        currl++;
+        if (f_curr_char == '\n') 
+            f_lines++;
     }
-    lines[nlines] = '\0';
 
-    printf("%s: INFO: file closed\n", path);
-    fclose(file);
+    fseek(f, 0L, SEEK_SET);
 
-    return lines;
+    return f_lines;
+}
+
+FILE *
+f_buf(char const *path)
+{
+    FILE   *f;
+    size_t  _f_size;
+
+    f = fopen(path, "r");
+    if (f == NULL)
+    {
+        printf("?: error: file not found\n");
+        exit(EXIT_FAILURE);
+    }
+
+    _f_size = f_size(f);
+    if (_f_size == 0)
+    {
+        printf("%s: error: file is empty, closing\n", path);
+        exit(EXIT_FAILURE);
+    }
+
+    F_path  = path;
+    F_lines = f_lines_count(f) + 1;
+
+    return f;
+}
+
+size_t *
+f_lines_size(FILE *f)
+{   
+    size_t   *f_lines_size;
+
+    size_t   f_char_index;
+    long int f_curr_line;
+    char     f_curr_char;
+
+    f_lines_size = malloc((F_lines) * sizeof(*f_lines_size));
+    if (f_lines_size == NULL) {
+        printf("%s: error: device can not handle the file\n", F_path);
+        exit(EXIT_FAILURE);
+    }
+
+    f_curr_line  = 0;
+    f_char_index = 0;
+    while (( f_curr_char = fgetc(f) ) != EOF) {
+        f_char_index++;
+        if (f_curr_char == '\n') {
+            f_lines_size[f_curr_line] = f_char_index + 1;
+
+            f_char_index = 0;
+            f_curr_line++;
+        }
+    }
+    f_lines_size[f_curr_line] = f_char_index;
+
+    fseek(f, 0L, SEEK_SET); 
+    
+    return f_lines_size;
+}
+
+char ** 
+f_read_by_lines(FILE *f) // rbl: read by lines
+{
+    char    **f_lines;    
+    size_t   *_f_lines_size;
+    long int  f_curr_line_index;
+
+    printf("%s: info: starting to read file...\n", F_path);
+    printf("%s: info: file lines: `%li`\n", F_path, F_lines);
+
+    _f_lines_size = f_lines_size(f);
+    
+    f_lines = malloc(F_lines * sizeof(char *));
+    if (f_lines == NULL) {
+        printf("%s: error: device can not handle the file\n", F_path);
+        exit(EXIT_FAILURE);
+    }
+
+    for (f_curr_line_index = 0; F_lines > f_curr_line_index; f_curr_line_index++) {
+        f_lines[f_curr_line_index] = malloc(_f_lines_size[f_curr_line_index]);
+        fgets(f_lines[f_curr_line_index], _f_lines_size[f_curr_line_index] + 1, f);
+    }
+
+    printf("%s: info: closing file...\n", F_path);
+    fclose(f);
+    printf("%s: info: file closed\n", F_path);
+
+    return f_lines;
 }
