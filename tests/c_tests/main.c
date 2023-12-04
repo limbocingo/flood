@@ -10,6 +10,8 @@ int main(int argc, char *argv[])
 {
     FILE   *file    = f_buf(argv[1]);
     char  **f_lines = f_read_by_lines(file);    
+    
+    lexer(f_lines);
 
     return 0;
 }

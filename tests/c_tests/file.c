@@ -96,7 +96,7 @@ f_lines_size(FILE *f)
 }
 
 char ** 
-f_read_by_lines(FILE *f) // rbl: read by lines
+f_read_by_lines(FILE *f)
 {
     char    **f_lines;    
     size_t   *_f_lines_size;
