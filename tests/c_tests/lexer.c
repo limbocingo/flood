@@ -65,6 +65,10 @@ c_type(char c)
             return PUNCTUATION;
         case '&':
             return PUNCTUATION;
+        case '@':
+            return PUNCTUATION;
+        case '|':
+            return PUNCTUATION;
     }
 }
 
