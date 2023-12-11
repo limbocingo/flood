@@ -1,31 +1,9 @@
 #include <stdio.h>
 
-enum Operator
-{   
-    SUM='+',
-    MINUS='-',
-    MULTIPLIER='*',
-
-    OP_COUNT,
-
-    END=-1
-};
-
-static const enum Operator Operators[] = {
-    SUM,
-    MINUS,
-    MULTIPLIER,
-
-    OP_COUNT,
-
-    END
-};
-
 typedef struct
 {
-    char *name;
     char *value;
-    enum Type
+    enum
     {
         KEYWORD,
         OPERATOR,
@@ -35,4 +13,4 @@ typedef struct
     } type;
 } Token;
 
-void lexer(char **lines);
+void f_lex(char **lines);

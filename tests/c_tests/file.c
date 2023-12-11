@@ -4,7 +4,6 @@
 #include "file.h"
 
 const char *F_path;
-size_t      F_lines;
 
 size_t
 f_size(FILE *f)
@@ -33,7 +32,7 @@ f_lines_count(FILE *f)
 
     fseek(f, 0L, SEEK_SET);
 
-    return f_lines;
+    return f_lines + 1;
 }
 
 FILE *
@@ -56,8 +55,7 @@ f_buf(char const *path)
         exit(EXIT_FAILURE);
     }
 
-    F_path  = path;
-    F_lines = f_lines_count(f) + 1;
+    F_path = path;
 
     return f;
 }
@@ -65,13 +63,15 @@ f_buf(char const *path)
 size_t *
 f_lines_size(FILE *f)
 {   
-    size_t   *f_lines_size;
+    size_t *f_lines_size;
+    size_t  _f_lines_count;
 
-    size_t   f_char_index;
-    long int f_curr_line;
-    char     f_curr_char;
+    size_t f_char_index;
+    size_t f_curr_line;
+    char   f_curr_char;
 
-    f_lines_size = malloc((F_lines) * sizeof(*f_lines_size));
+    _f_lines_count = f_lines_count(f);
+    f_lines_size = malloc((_f_lines_count) * sizeof(*f_lines_size));
     if (f_lines_size == NULL) {
         printf("%s: error: device can not handle the file\n", F_path);
         exit(EXIT_FAILURE);
@@ -100,20 +100,23 @@ f_read_by_lines(FILE *f)
 {
     char    **f_lines;    
     size_t   *_f_lines_size;
+    size_t    _f_lines_count;
     long int  f_curr_line_index;
 
     printf("%s: info: starting to read file...\n", F_path);
-    printf("%s: info: file lines: `%li`\n", F_path, F_lines);
 
     _f_lines_size = f_lines_size(f);
+    _f_lines_count = f_lines_count(f);
+
+    printf("%s: info: file lines: `%ld`\n", F_path, _f_lines_count);
     
-    f_lines = malloc(F_lines * sizeof(char *));
+    f_lines = malloc(_f_lines_count * sizeof(char *));
     if (f_lines == NULL) {
         printf("%s: error: device can not handle the file\n", F_path);
         exit(EXIT_FAILURE);
     }
 
-    for (f_curr_line_index = 0; F_lines > f_curr_line_index; f_curr_line_index++) {
+    for (f_curr_line_index = 0; _f_lines_count > f_curr_line_index; f_curr_line_index++) {
         f_lines[f_curr_line_index] = malloc(_f_lines_size[f_curr_line_index]);
         fgets(f_lines[f_curr_line_index], _f_lines_size[f_curr_line_index] + 1, f);
     }

@@ -6,9 +6,9 @@
 #include "lexer.h"
 
 void
-lexer(char **lines) {
-    for (int i = 0; Operators[i] != END; i++) 
-    {
-        printf("%d\n", Operators[i]);
-    }
+f_lex(char **lines) {
+    Token tokens[32][32];
+    tokens[0][0].type = STRING;
+    tokens[0][0].value = "dsadsads";
+    printf("%s", tokens[0][0].value);
 }
