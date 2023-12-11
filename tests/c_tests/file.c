@@ -72,16 +72,19 @@ f_lines_size(FILE *f)
 
     _f_lines_count = f_lines_count(f);
     f_lines_size = malloc((_f_lines_count) * sizeof(*f_lines_size));
-    if (f_lines_size == NULL) {
+    if (f_lines_size == NULL)
+    {
         printf("%s: error: device can not handle the file\n", F_path);
         exit(EXIT_FAILURE);
     }
 
     f_curr_line  = 0;
     f_char_index = 0;
-    while (( f_curr_char = fgetc(f) ) != EOF) {
+    while (( f_curr_char = fgetc(f) ) != EOF) 
+    {
         f_char_index++;
-        if (f_curr_char == '\n') {
+        if (f_curr_char == '\n') 
+        {
             f_lines_size[f_curr_line] = f_char_index + 1;
 
             f_char_index = 0;
