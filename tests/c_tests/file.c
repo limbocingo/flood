@@ -3,22 +3,22 @@
 
 #include "file.h"
 
-const char *F_path;
+const char *FILE_PATH;
 
 size_t
-f_size(FILE *f)
+File_size(FILE *file)
 {
-    size_t f_size;
+    size_t size;
     
-    fseek(f, 0L, SEEK_END);
-    f_size = ftell(f);
-    fseek(f, 0L, SEEK_SET);
+    fseek(file, 0L, SEEK_END);
+    size = ftell(file);
+    fseek(file, 0L, SEEK_SET);
 
     return f_size;
 }
 
 size_t
-f_lines_count(FILE *f)
+File_lines(FILE *f)
 {
     char   f_curr_char;
     size_t f_lines;
@@ -36,7 +36,7 @@ f_lines_count(FILE *f)
 }
 
 FILE *
-f_buf(char const *path)
+File_open(char const *path)
 {
     FILE   *f;
     size_t  _f_size;
@@ -61,7 +61,7 @@ f_buf(char const *path)
 }
 
 size_t *
-f_lines_size(FILE *f)
+File_lines_size(FILE *f)
 {   
     size_t *f_lines_size;
     size_t  _f_lines_count;

@@ -16,4 +16,4 @@ typedef struct
     Type  type;
 } Token;
 
-void f_lex(char **lines);
+void f_tokenize(char **lines);
