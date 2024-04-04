@@ -1,7 +1,11 @@
 {
     "files.associations": {
         "*.t": "plaintext",
+        "*.flood": "flood",
         "stdio.h": "c",
-        "*.floood": "flood"
+        "*.floood": "flood",
+        "cstdlib": "c",
+        "stdlib.h": "c",
+        "file.h": "c"
     }
 }
